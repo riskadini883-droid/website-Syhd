@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KETHUNG PROJECT</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+body{background:#000;color:#fff}
+
+/* NAV */
+.nav{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:25px;
+  padding:10px 25px;
+  border-radius:30px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(10px);
+}
+.nav a{color:#00ffcc;text-decoration:none}
+
+/* SECTION */
+.section{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s;
+}
+.section.show{opacity:1;transform:translateY(0)}
+
+h1{
+  font-size:60px;
+  background:linear-gradient(90deg,#00ffcc,#00ccff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.btn{
+  margin-top:20px;
+  padding:12px 30px;
+  border-radius:30px;
+  border:1px solid #00ffcc;
+  background:transparent;
+  color:#00ffcc;
+  cursor:pointer;
+}
+
+/* MAP */
+.maps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+  width:90%;
+}
+
+.card{
+  position:relative;
+  background:rgba(255,255,255,.05);
+  border-radius:20px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.4s;
+}
+.card:hover{
+  transform:translateY(-10px) scale(1.05);
+  box-shadow:0 0 25px #00ffcc;
+}
+
+.card img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+}
+
+/* PLAY */
+.play-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.6);
+  opacity:0;
+  transition:.3s;
+}
+.card:hover .play-overlay{opacity:1}
+
+.play-overlay span{
+  padding:12px 25px;
+  border:2px solid #00ffcc;
+  border-radius:30px;
+}
+
+/* BADGE */
+.badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  padding:5px 10px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:bold;
+}
+.easy{background:#00ff88;color:#000}
+.hard{background:#ffcc00;color:#000}
+
+/* 💃 DUGEM MODE */
+.dugem{
+  background:linear-gradient(45deg,#ff00cc,#00ffff);
+  color:#fff;
+  animation:dugemGlow 1s infinite alternate;
+}
+@keyframes dugemGlow{
+  from{box-shadow:0 0 10px #ff00cc;}
+  to{box-shadow:0 0 20px #00ffff;}
+}
+
+.info{padding:15px}
+.info h3{color:#00ffcc}
+
+/* LOADING */
+.loading{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:999;
+  opacity:0;
+  pointer-events:none;
+}
+.loading.active{opacity:1;pointer-events:auto}
+
+.bar{
+  width:200px;
+  height:5px;
+  background:#111;
+  margin-top:10px;
+}
+.bar div{
+  height:100%;
+  width:0%;
+  background:#00ffcc;
+  animation:load 2s linear forwards;
+}
+@keyframes load{to{width:100%}}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+<a href="#home">Home</a>
+<a href="#maps">Maps</a>
+<a href="#join">Join</a>
+</div>
+
+<section class="section" id="home">
+<h1>KETHUNG PROJECT</h1>
+<button class="btn" onclick="scrollToSection('maps')">Play</button>
+</section>
+
+<section class="section" id="maps">
+<h1>RTA MAPS</h1>
+
+<div class="maps">
+
+<div class="card" onclick="startGame('https://www.roblox.com/id/games/128407315914554/Jalur-Sembarangan')">
+<img src="https://tr.rbxcdn.com/180DAY-2b2f9e7d3d9f9c4e5b3f4c1a5d6b7c8/768/432/Image/Png/noFilter">
+<div class="badge easy">EASY</div>
+<div class="play-overlay"><span>PLAY</span></div>
+<div class="info"><h3>Jalur Sembarangan</h3></div>
+</div>
+
+<div class="card" onclick="startGame('https://www.roblox.com/id/games/125375302873987/MOUNT-GAJELAS-HARD-MODE')">
+<img src="https://tr.rbxcdn.com/180DAY-9c9e4c3a2b1d8e7f6a5b4c3d2e1f0a9/768/432/Image/Png/noFilter">
+<div class="badge hard">HARD</div>
+<div class="play-overlay"><span>PLAY</span></div>
+<div class="info"><h3>Mount Gajelas</h3></div>
+</div>
+
+<div class="card" onclick="startGameDugem('https://www.roblox.com/id/games/112056809943340/AlUla')">
+<img src="https://tr.rbxcdn.com/180DAY-abcdef1234567890abcdef1234567890/768/432/Image/Png/noFilter">
+<div class="badge dugem">DUGEM</div>
+<div class="play-overlay"><span>PLAY</span></div>
+<div class="info"><h3>Al Ula</h3></div>
+</div>
+
+</div>
+</section>
+
+<section class="section" id="join">
+<h1>JOIN RTA</h1>
+<button class="btn" onclick="openDiscord()">Join Discord</button>
+</section>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+<h1>Loading...</h1>
+<div class="bar"><div></div></div>
+</div>
+
+<!-- 🎵 DUGEM MUSIC -->
+<audio id="dugemMusic">
+<source src="https://www.myinstants.com/media/sounds/bass-drop.mp3">
+</audio>
+
+<script>
+function openDiscord(){window.open("https://discord.gg/kpHDnrqFBs")}
+
+function scrollToSection(id){
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+function startGame(url){
+let load=document.getElementById("loading");
+load.classList.add("active");
+
+setTimeout(()=>{
+window.open(url);
+load.classList.remove("active");
+},2000);
+}
+
+/* 💃 DUGEM START */
+function startGameDugem(url){
+let music=document.getElementById("dugemMusic");
+music.currentTime=0;
+music.play();
+
+let load=document.getElementById("loading");
+load.classList.add("active");
+
+setTimeout(()=>{
+window.open(url);
+load.classList.remove("active");
+},2000);
+}
+
+/* SCROLL */
+const sections=document.querySelectorAll(".section");
+window.addEventListener("scroll",()=>{
+sections.forEach(sec=>{
+if(sec.getBoundingClientRect().top < window.innerHeight-100){
+sec.classList.add("show");
+}
+});
+});
+</script>
+
+</body>
+</html>
